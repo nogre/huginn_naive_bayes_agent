@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
 
-  spec.add_runtime_dependency "yaml"
   spec.add_runtime_dependency "nbayes"
   spec.add_runtime_dependency "huginn_agent"
 end
