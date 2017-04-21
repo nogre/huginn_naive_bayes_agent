@@ -1,24 +1,22 @@
-# HuginnNaiveBayesAgent
+# NaiveBayesAgent
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/huginn_naive_bayes_agent`. To experiment with that code, run `bin/console` for an interactive prompt.
+Welcome to your new agent gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/huginn_naive_bayes_agent`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this string to your Huginn's .env `ADDITIONAL_GEMS` configuration:
 
 ```ruby
-gem 'huginn_naive_bayes_agent'
+huginn_naive_bayes_agent
+# when only using this agent gem it should look like hits:
+ADDITIONAL_GEMS=huginn_naive_bayes_agent
 ```
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install huginn_naive_bayes_agent
 
 ## Usage
 
@@ -26,16 +24,22 @@ TODO: Write usage instructions here
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Running `rake` will clone and set up Huginn in `spec/huginn` to run the specs of the Gem in Huginn as if they would be build-in Agents. The desired Huginn repository and branch can be modified in the `Rakefile`:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+HuginnAgent.load_tasks(branch: '<your branch>', remote: 'https://github.com/<github user>/huginn.git')
+```
+
+Make sure to delete the `spec/huginn` directory and re-run `rake` after changing the `remote` to update the Huginn source code.
+
+After the setup is done `rake spec` will only run the tests, without cloning the Huginn source again.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/huginn_naive_bayes_agent.
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+1. Fork it ( https://github.com/[my-github-username]/huginn_naive_bayes_agent/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request

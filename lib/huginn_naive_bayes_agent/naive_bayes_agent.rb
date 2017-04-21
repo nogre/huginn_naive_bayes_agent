@@ -1,7 +1,6 @@
 require 'yaml'
 require 'nbayes'
 
-
 module Agents
   class NaiveBayesAgent < Agent
     cannot_be_scheduled!
@@ -36,23 +35,7 @@ module Agents
       Categories can be similarly deleted by `nb_cats : =delCat` and `nb_content : categories to delete`.
       
       **See [the NBayes ruby gem](https://github.com/oasic/nbayes) and [this blog post](http://blog.oasic.net/2012/06/naive-bayes-for-ruby.html) for more information about the Naive Bayes implementation used here.**
-      
     MD
-
-    event_description <<-MD
-      This will change based on the source event, but all events will have these two fields in their payloads: 
-        {
-          ...
-          'nb_content' => 'birch oak elm conifer',
-          'nb_cats' => 'trees plants'
-        }        
-
-    MD
-
-    def validate_options
-      errors.add(:base, "expected_update_period_in_days must be present") unless options['expected_update_period_in_days'].present?
-      errors.add(:base, "minimum value must be greater than 0 and less than or equal to 1, e.g. 0.5") unless (0 < options['min_value'].to_f && options['min_value'].to_f <= 1)
-    end
 
     def default_options
       {
@@ -61,12 +44,10 @@ module Agents
         'expected_update_period_in_days' => "7"
       }
     end
-#    form_configurable :min_value
-#    form_configurable :propagate_training_events, type: :boolean
-#    form_configurable :expected_receive_period_in_days
 
-    def working?
-      event_created_within?((interpolated['expected_receive_period_in_days'].presence || 7).to_i) && !recent_error_logs? 
+    def validate_options
+      errors.add(:base, "expected_update_period_in_days must be present") unless options['expected_update_period_in_days'].present?
+      errors.add(:base, "minimum value must be greater than 0 and less than or equal to 1, e.g. 0.5") unless (0 < options['min_value'].to_f && options['min_value'].to_f <= 1)
     end
 
     def receive(incoming_events)
@@ -147,4 +128,3 @@ module Agents
     end
   end
 end
-
