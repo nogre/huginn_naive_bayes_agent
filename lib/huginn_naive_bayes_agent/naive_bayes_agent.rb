@@ -1,3 +1,6 @@
+require 'nbayes'
+require'yaml'
+
 module Agents
   class NaiveBayesAgent < Agent
     cannot_be_scheduled!
