@@ -49,6 +49,10 @@ module Agents
       errors.add(:base, "expected_update_period_in_days must be present") unless options['expected_update_period_in_days'].present?
       errors.add(:base, "minimum value must be greater than 0 and less than or equal to 1, e.g. 0.5") unless (0 < options['min_value'].to_f && options['min_value'].to_f <= 1)
     end
+    
+    def working?
+      received_event_without_error?
+    end
 
     def receive(incoming_events)
       incoming_events.each do |event|
