@@ -64,10 +64,10 @@ module Agents
           elsif cats[0] == "=delCat"
             ca = event.payload['nb_content'].split(/\s+/)
             ca.each do |c|
-              delete_category(c)
+              nbayes.delete_category(c)
             end
           elsif cats[0] == "=purgeTokens"
-            purge_less_than(event.payload['nb_content'].to_i)
+            nbayes.purge_less_than(event.payload['nb_content'].to_i)
           else
             cats.each do |c|
               c.starts_with?('-') ? nbayes.untrain(event.payload['nb_content'].split(/\s+/), c[1..-1]) : nbayes.train(event.payload['nb_content'].split(/\s+/), c)
@@ -97,9 +97,9 @@ module Agents
       if dat.nil?
         nbayes = NBayes::Base.new
       elsif dat[0..2] == "---"
-        nbayes = self.class.from_yml(dat)
+        nbayes = NBayes.class.from_yml(dat)
       else
-        nbayes = self.class.from(dat)
+        nbayes = NBayes.class.from(dat)
       end
       nbayes
     end
