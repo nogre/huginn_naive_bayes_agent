@@ -113,24 +113,24 @@ module Agents
       nbayes
     end
 
-    def purge_less_than(x)
-      remove_list = {}
-      nbayes = load(memory['data'])
-      nbayes.vocab.each do |token|
-        if nbayes.data.purge_less_than(token, x)
-          # print "removing #{token}\n"
-          remove_list[token] = 1
-        end
-      end  # each vocab word
-      remove_list.keys.each {|token| nbayes.vocab.delete(token) }
-      memory['data'] = YAML.dump(nbayes)
-    end
+#    def purge_less_than(x)
+#      remove_list = {}
+#      nbayes = load(memory['data'])
+#      nbayes.vocab.each do |token|
+#        if nbayes.data.purge_less_than(token, x)
+#          # print "removing #{token}\n"
+#          remove_list[token] = 1
+#        end
+#      end  # each vocab word
+#      remove_list.keys.each {|token| nbayes.vocab.delete(token) }
+#      memory['data'] = YAML.dump(nbayes)
+#    end
 
     # Delete an entire category from the classification data
-    def delete_category(category)
-      nbayes = load(memory['data'])
-      nbayes.data.delete_category(category)
-      memory['data'] = YAML.dump(nbayes)
-    end
+#    def delete_category(category)
+#      nbayes = load(memory['data'])
+#      nbayes.data.delete_category(category)
+#      memory['data'] = YAML.dump(nbayes)
+#    end
   end
 end
