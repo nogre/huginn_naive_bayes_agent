@@ -98,10 +98,10 @@ module Agents
         nbayes = NBayes::Base.new
       elsif dat[0..2] == "---"
         nbayes = NBayes::Base.new
-        nbayes.from_yml(dat)
+        nbayes.class.from_yml(dat)
       else
         nbayes = NBayes::Base.new
-        nbayes.from(dat)
+        nbayes.class.from(dat)
       end
       nbayes
     end
