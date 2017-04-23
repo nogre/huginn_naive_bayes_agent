@@ -22,13 +22,13 @@ module Agents
       
       The option `propagate_training_events` lets you choose whether the training events are emitted along with the classified events. If it is set to false, then no new event will be created from events that already had categories when they were received.
       
-      #### Advanced Features
+      To load trained data into an agent's memory, create a Manual Agent with `nb_cats : =loadYML` and `nb_content : your-well-formed-training-data-here`. Use the text input box, not the form view, by clicking "Toggle View" when inputting your training data else whitespace errors occur in the YML. Then submit this to your Naive Bayes Agent.
+      
+      #### Advanced Features NOT YET WORKING
       
       *Be carefull with these functions: see the documentation linked below.*
       
       If a category has a `-` in front of it, eg. `-trees`, then the category `trees` will be UNtrained according to that content. 
-      
-      To load trained data into an agent's memory, create a Manual Agent with `nb_cats : =loadYML` and `nb_content : your-well-formed-training-data-here`. Use the text input box, not the form view, by clicking "Toggle View" when inputting your training data else whitespace errors occur in the YML. Then submit this to your Naive Bayes Agent.
       
       Low frequency words that increase processing time and may overfit - tokens with a count less than x (measured by summing across all classes) - can be removed: Set `nb_cats : =purgeTokens` and `nb_content : integer-value`.
 
