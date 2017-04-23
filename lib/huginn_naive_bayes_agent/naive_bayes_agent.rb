@@ -105,7 +105,7 @@ module Agents
     
     def self.from_yml(yml_data)
       nbayes = YAML.load(yml_data)
-      #nbayes.reset_after_import()  # yaml does not properly set the defaults on the Hashes
+      nbayes.reset_after_import()  # yaml does not properly set the defaults on the Hashes
       nbayes
     end
 
