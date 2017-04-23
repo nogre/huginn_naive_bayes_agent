@@ -96,12 +96,8 @@ module Agents
     def load(dat)
       if dat.nil?
         nbayes = NBayes::Base.new
-      elsif dat[0..2] == "---"
-        nbayes = YAML.load(dat)
-        nbayes.reset_after_import()
       else
-        nbayes = NBayes::Base.new
-        nbayes.class.from(dat)
+        nbayes = self.class.from_yml(dat)
       end
       nbayes
     end
@@ -109,7 +105,7 @@ module Agents
     
     def self.from_yml(yml_data)
       nbayes = YAML.load(yml_data)
-      nbayes.reset_after_import()  # yaml does not properly set the defaults on the Hashes
+      #nbayes.reset_after_import()  # yaml does not properly set the defaults on the Hashes
       nbayes
     end
 
