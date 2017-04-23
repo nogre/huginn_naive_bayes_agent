@@ -97,9 +97,11 @@ module Agents
       if dat.nil?
         nbayes = NBayes::Base.new
       elsif dat[0..2] == "---"
-        nbayes = NBayes::Base.from_yml(dat)
+        nbayes = NBayes::Base.new
+        nbayes.from_yml(dat)
       else
-        nbayes = NBayes::Base.from(dat)
+        nbayes = NBayes::Base.new
+        nbayes.from(dat)
       end
       nbayes
     end
