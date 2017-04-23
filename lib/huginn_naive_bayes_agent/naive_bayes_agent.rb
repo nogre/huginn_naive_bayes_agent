@@ -56,7 +56,7 @@ module Agents
 
     def receive(incoming_events)
       incoming_events.each do |event|
-        nbayes = load(memory['data'])
+        nbayes = NBayes::Base.load(memory['data'])
         if event.payload['nb_cats'].length != 0
           cats = event.payload['nb_cats'].split(/\s+/)
           if cats[0] == "=loadYML"
@@ -97,7 +97,7 @@ module Agents
       if dat.nil?
         nbayes = NBayes::Base.new
       elsif dat[0..2] == "---"
-        nbayes = NBayes::Base.new
+        nbayes = NBayes::Base.load(dat)
         nbayes.class.from_yml(dat)
       else
         nbayes = NBayes::Base.new
