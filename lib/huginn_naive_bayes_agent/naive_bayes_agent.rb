@@ -24,7 +24,9 @@ module Agents
       
       To load trained data into an agent's memory, create a Manual Agent with `nb_cats : =loadYML` and `nb_content : your-well-formed-training-data-here`. Use the text input box, not the form view, by clicking "Toggle View" when inputting your training data else whitespace errors occur in the YML. Then submit this to your Naive Bayes Agent.
       
-      #### Advanced Features NOT YET WORKING
+      #### Advanced Features 
+      
+      ##### Only works if the nbayes dependency was installed from Github, version => .1.2. Rubygems is still .1.1
       
       *Be carefull with these functions: see the documentation linked below.*
       
@@ -66,8 +68,10 @@ module Agents
             ca.each do |c|
               nbayes.delete_category(c)
             end
+            memory['data'] = YAML.dump(nbayes)
           elsif cats[0] == "=purgeTokens"
             nbayes.purge_less_than(event.payload['nb_content'].to_i)
+            memory['data'] = YAML.dump(nbayes)
           else
             cats.each do |c|
               c.starts_with?('-') ? nbayes.untrain(event.payload['nb_content'].split(/\s+/), c[1..-1]) : nbayes.train(event.payload['nb_content'].split(/\s+/), c)
