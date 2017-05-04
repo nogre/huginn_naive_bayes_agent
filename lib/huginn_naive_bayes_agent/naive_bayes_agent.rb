@@ -84,7 +84,7 @@ module Agents
         else
           result = nbayes.classify(event.payload['nb_content'].split(/\s+/))
           if interpolated['min_value'].to_f == 1
-            result.max_class
+            event.payload['nb_cats'] << (event.payload['nb_cats'].length == 0 ? result.max_class : " "+result.max_class)
           else
             result.each do |cat, val|
               if val > interpolated['min_value'].to_f
@@ -113,24 +113,5 @@ module Agents
       nbayes
     end
 
-#    def purge_less_than(x)
-#      remove_list = {}
-#      nbayes = load(memory['data'])
-#      nbayes.vocab.each do |token|
-#        if nbayes.data.purge_less_than(token, x)
-#          # print "removing #{token}\n"
-#          remove_list[token] = 1
-#        end
-#      end  # each vocab word
-#      remove_list.keys.each {|token| nbayes.vocab.delete(token) }
-#      memory['data'] = YAML.dump(nbayes)
-#    end
-
-    # Delete an entire category from the classification data
-#    def delete_category(category)
-#      nbayes = load(memory['data'])
-#      nbayes.data.delete_category(category)
-#      memory['data'] = YAML.dump(nbayes)
-#    end
   end
 end
