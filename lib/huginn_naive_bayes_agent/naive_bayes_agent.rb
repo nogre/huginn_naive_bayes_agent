@@ -14,7 +14,7 @@ module Agents
         * `nb_content` for the content used for classification, space separated. 
         * `nb_cats` for the classification categories, space separated.
         
-      If `nb_cats` is empty or contains `=T`, then the content from `nb_content` will be classified according to the training data. The categories will be added to `nb_cats` and then a new event is created with that payload.
+      If `nb_cats` is empty or contains `=class`, then the content from `nb_content` will be classified according to the training data. The categories will be added to `nb_cats` and then a new event is created with that payload.
       
       However, if `nb_cats` is already populated, then the content from `nb_content` will be used as training data for the categories listed in `nb_cats`. For instance, say `nb_cats` consists of `trees`. Then `nb_content` will be used as training data for the category `trees`. The data is saved to the agent memory. 
       
@@ -59,7 +59,7 @@ module Agents
     def receive(incoming_events)
       incoming_events.each do |event|
         nbayes = load(memory['data'])
-        if event.payload['nb_cats'].length > 0 and not event.payload['nb_cats'].include?("=T")
+        if event.payload['nb_cats'].length > 0 and not event.payload['nb_cats'].include?("=class")
           cats = event.payload['nb_cats'].split(/\s+/)
           if cats[0] == "=loadYML"
             memory['data'] = event.payload['nb_content']
