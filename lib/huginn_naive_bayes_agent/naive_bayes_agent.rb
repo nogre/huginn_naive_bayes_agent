@@ -59,6 +59,14 @@ module Agents
     def receive(incoming_events)
       incoming_events.each do |event|
         nbayes = load(memory['data'])
+        if !event.payload['nb_cats']
+          error("Missing `nb_cats` field in the event payload. #{event.payload.to_s}")
+          return
+        end
+        if !event.payload['nb_content']
+          error("Missing `nb_content` field in the event payload. #{event.payload.to_s}")
+          return
+        end 
         if event.payload['nb_cats'].length > 0 and not event.payload['nb_cats'].include?("=class")
           cats = event.payload['nb_cats'].split(/\s+/)
           if cats[0] == "=loadYML"
