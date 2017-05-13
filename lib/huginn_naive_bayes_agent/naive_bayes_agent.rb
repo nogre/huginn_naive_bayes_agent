@@ -1,7 +1,6 @@
 require 'nbayes'
 require 'yaml'
 require 'ruby-stemmer'
-require 'lingua/stemmer'
 
 module Agents
   class NaiveBayesAgent < Agent
