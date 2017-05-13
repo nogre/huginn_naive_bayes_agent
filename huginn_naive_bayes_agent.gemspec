@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "huginn_agent"
   spec.add_runtime_dependency "nbayes"
-  spec.add_runtime_dependency "ruby-stemmer"
+  spec.add_runtime_dependency "fast-stemmer"
 end

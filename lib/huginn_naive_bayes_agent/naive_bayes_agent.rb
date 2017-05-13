@@ -1,6 +1,6 @@
 require 'nbayes'
 require 'yaml'
-require 'ruby-stemmer'
+require 'fast-stemmer'
 
 module Agents
   class NaiveBayesAgent < Agent
