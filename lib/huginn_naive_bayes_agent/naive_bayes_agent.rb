@@ -20,6 +20,8 @@ module Agents
       
       When an event is received for classification, the Naive Bayes Agent will assign a value between 0 and 1 representing the likelihood that it falls under a category. The `min_value` option lets you choose the minimum threshold that must be reached before the event is labeled with that category. If `min_value` is set to 1, then the event is labeled with whichever category has the highest value.
       
+      Incoming data in `nb_content` can be cleaned up before classification. If `strip_punctuation` is set to true, the text in `nb_content` is stripped of punctuation. 
+      
       The option `propagate_training_events` lets you choose whether the training events are emitted along with the classified events. If it is set to false, then no new event will be created from events that already had categories when they were received.
       
       To load trained data into an agent's memory, create a Manual Agent with `nb_cats : =loadYML` and `nb_content : your-well-formed-training-data-here`. Use the text input box, not the form view, by clicking "Toggle View" when inputting your training data else whitespace errors occur in the YML. Then submit this to your Naive Bayes Agent.
@@ -44,6 +46,8 @@ module Agents
         'min_value' => "0.5",
         'propagate_training_events' => 'true',
         'expected_update_period_in_days' => "7"
+        'strip_punctuation' => 'false'
+        'stem' => 'false'
       }
     end
 
@@ -59,6 +63,7 @@ module Agents
     def receive(incoming_events)
       incoming_events.each do |event|
         nbayes = load(memory['data'])
+        # validate incoming payload
         if !event.payload['nb_cats']
           error("Missing `nb_cats` field in the event payload. #{event.payload.to_s}")
 		  raise 'Missing `nb_cats` field in the event payload.'
@@ -67,6 +72,7 @@ module Agents
           error("Missing `nb_content` field in the event payload. #{event.payload.to_s}")
           raise 'Missing `nb_content` field in the event payload.'
         end 
+        # train or modify existing classifier
         if event.payload['nb_cats'].length > 0 and not event.payload['nb_cats'].include?("=class")
           cats = event.payload['nb_cats'].split(/\s+/)
           if cats[0] == "=loadYML"
@@ -81,16 +87,25 @@ module Agents
             nbayes.purge_less_than(event.payload['nb_content'].to_i)
             memory['data'] = YAML.dump(nbayes)
           else
+            nb_content = event.payload['nb_content']
+            if interpolated['strip_punctuation'] = "true"
+              nb_content = content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
+            end
             cats.each do |c|
-              c.starts_with?('-') ? nbayes.untrain(event.payload['nb_content'].split(/\s+/), c[1..-1]) : nbayes.train(event.payload['nb_content'].split(/\s+/), c)
+              c.starts_with?('-') ? nbayes.untrain(nb_content.split(/\s+/), c[1..-1]) : nbayes.train(nb_content.split(/\s+/), c)
             end
             memory['data'] = YAML.dump(nbayes)
             if interpolated['propagate_training_events'] = "true"
               create_event payload: event.payload
             end
           end
+        # classify new data
         else
-          result = nbayes.classify(event.payload['nb_content'].split(/\s+/))
+          nb_content = event.payload['nb_content']
+          if interpolated['strip_punctuation'] = "true"
+            nb_content = content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
+          end
+          result = nbayes.classify(nb_content.split(/\s+/))
           if interpolated['min_value'].to_f == 1
             event.payload['nb_cats'] << (event.payload['nb_cats'].length == 0 ? result.max_class : " "+result.max_class)
           else
