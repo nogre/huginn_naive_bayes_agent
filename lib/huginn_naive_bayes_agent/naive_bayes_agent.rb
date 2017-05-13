@@ -29,7 +29,7 @@ module Agents
       
       To load trained data into an agent's memory, create a Manual Agent with `nb_cats : =loadYML` and `nb_content : your-well-formed-training-data-here`. Use the text input box, not the form view, by clicking "Toggle View" when inputting your training data else whitespace errors occur in the YML. Then submit this to your Naive Bayes Agent.
       
-      #### Advanced NBayes Features 
+      #### Advanced Naive Bayes Features 
       
       ##### Only works if the nbayes dependency was installed from Github, version => .1.2. Rubygems is still .1.1
       
