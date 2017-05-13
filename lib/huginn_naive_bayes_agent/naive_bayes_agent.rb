@@ -19,7 +19,9 @@ module Agents
       
       However, if `nb_cats` is already populated, then the content from `nb_content` will be used as training data for the categories listed in `nb_cats`. For instance, say `nb_cats` consists of `trees`. Then `nb_content` will be used as training data for the category `trees`. The data is saved to the agent memory. 
       
-      Data in `nb_content` can be cleaned before classification. If `strip_punctuation` is set to true, the text in `nb_content` is stripped of punctuation before it is sent to the classifier. The changes are not saved to `nb_content`.
+      Data in `nb_content` can be cleaned before classification. If `strip_punctuation` is set to true, the text in `nb_content` is stripped of punctuation before it is sent to the classifier. The changes are not saved to `nb_content` but will affect the Agent's saved training data.
+      
+      Content can also be "stemmed", reducing words to their base, by setting `stem` to true. Stemming will reduce "epistemology", "epistemologies", and "epistemological" all to "epistemolog". See [here](https://github.com/romanbsd/fast-stemmer) for the implementation used. Again, changes are not saved to `nb_content` but will affect the Agent's saved training data.
             
       When an event is received for classification, the Naive Bayes Agent will assign a value between 0 and 1 representing the likelihood that it falls under a category. The `min_value` option lets you choose the minimum threshold that must be reached before the event is labeled with that category. If `min_value` is set to 1, then the event is labeled with whichever category has the highest value. 
       
