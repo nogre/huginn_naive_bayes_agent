@@ -1,5 +1,6 @@
 require 'nbayes'
-require'yaml'
+require 'yaml'
+require 'ruby-stemmer'
 
 module Agents
   class NaiveBayesAgent < Agent
@@ -46,7 +47,8 @@ module Agents
         'min_value' => "0.5",
         'propagate_training_events' => 'true',
         'expected_update_period_in_days' => "7",
-        'strip_punctuation' => 'false'
+        'strip_punctuation' => 'false',
+        'stem' => 'false',
       }
     end
 
@@ -90,6 +92,10 @@ module Agents
             if interpolated['strip_punctuation'] == "true"
               nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
             end
+            if interpolated['stem'] == "true"
+              stemmer = Lingua::Stemmer.new(:language => "en")
+              nb_content = nb_content.split(/\s+/).map{|word| stemmer.stem(word)}.join(" ")
+            end
             cats.each do |c|
               c.starts_with?('-') ? nbayes.untrain(nb_content.split(/\s+/), c[1..-1]) : nbayes.train(nb_content.split(/\s+/), c)
             end
@@ -103,6 +109,10 @@ module Agents
           nb_content = event.payload['nb_content']
           if interpolated['strip_punctuation'] == "true"
             nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
+          end
+          if interpolated['stem'] == "true"
+            stemmer = Lingua::Stemmer.new(:language => "en")
+            nb_content = nb_content.split(/\s+/).map{|word| stemmer.stem(word)}.join(" ")
           end
           result = nbayes.classify(nb_content.split(/\s+/))
           if interpolated['min_value'].to_f == 1
