@@ -46,8 +46,7 @@ module Agents
         'min_value' => "0.5",
         'propagate_training_events' => 'true',
         'expected_update_period_in_days' => "7",
-        'strip_punctuation' => 'false',
-        'stem' => 'false'
+        'strip_punctuation' => 'false'
       }
     end
 
