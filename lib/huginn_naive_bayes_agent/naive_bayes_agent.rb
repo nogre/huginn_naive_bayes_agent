@@ -89,7 +89,7 @@ module Agents
           else
             nb_content = event.payload['nb_content']
             if interpolated['strip_punctuation'] = "true"
-              nb_content = content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
+              nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
             end
             cats.each do |c|
               c.starts_with?('-') ? nbayes.untrain(nb_content.split(/\s+/), c[1..-1]) : nbayes.train(nb_content.split(/\s+/), c)
