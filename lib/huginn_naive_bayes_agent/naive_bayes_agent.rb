@@ -18,9 +18,9 @@ module Agents
       
       However, if `nb_cats` is already populated, then the content from `nb_content` will be used as training data for the categories listed in `nb_cats`. For instance, say `nb_cats` consists of `trees`. Then `nb_content` will be used as training data for the category `trees`. The data is saved to the agent memory. 
       
-      When an event is received for classification, the Naive Bayes Agent will assign a value between 0 and 1 representing the likelihood that it falls under a category. The `min_value` option lets you choose the minimum threshold that must be reached before the event is labeled with that category. If `min_value` is set to 1, then the event is labeled with whichever category has the highest value.
-      
-      Incoming data in `nb_content` can be cleaned up before classification. If `strip_punctuation` is set to true, the text in `nb_content` is stripped of punctuation. 
+      Data in `nb_content` can be cleaned before classification. If `strip_punctuation` is set to true, the text in `nb_content` is stripped of punctuation before it is sent to the classifier. The changes are not saved to `nb_content`.
+            
+      When an event is received for classification, the Naive Bayes Agent will assign a value between 0 and 1 representing the likelihood that it falls under a category. The `min_value` option lets you choose the minimum threshold that must be reached before the event is labeled with that category. If `min_value` is set to 1, then the event is labeled with whichever category has the highest value. 
       
       The option `propagate_training_events` lets you choose whether the training events are emitted along with the classified events. If it is set to false, then no new event will be created from events that already had categories when they were received.
       
@@ -88,21 +88,21 @@ module Agents
             memory['data'] = YAML.dump(nbayes)
           else
             nb_content = event.payload['nb_content']
-            if interpolated['strip_punctuation'] = "true"
+            if interpolated['strip_punctuation'] = true
               nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
             end
             cats.each do |c|
               c.starts_with?('-') ? nbayes.untrain(nb_content.split(/\s+/), c[1..-1]) : nbayes.train(nb_content.split(/\s+/), c)
             end
             memory['data'] = YAML.dump(nbayes)
-            if interpolated['propagate_training_events'] = "true"
+            if interpolated['propagate_training_events'] = true
               create_event payload: event.payload
             end
           end
         # classify new data
         else
           nb_content = event.payload['nb_content']
-          if interpolated['strip_punctuation'] = "true"
+          if interpolated['strip_punctuation'] = true
             nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
           end
           result = nbayes.classify(nb_content.split(/\s+/))
