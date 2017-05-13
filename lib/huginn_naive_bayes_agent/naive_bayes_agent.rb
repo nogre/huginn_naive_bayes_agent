@@ -103,7 +103,7 @@ module Agents
         else
           nb_content = event.payload['nb_content']
           if interpolated['strip_punctuation'] = "true"
-            nb_content = content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
+            nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
           end
           result = nbayes.classify(nb_content.split(/\s+/))
           if interpolated['min_value'].to_f == 1
