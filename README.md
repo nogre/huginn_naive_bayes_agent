@@ -1,8 +1,6 @@
 # NaiveBayesAgent
 
-Welcome to your new agent gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/huginn_naive_bayes_agent`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The Huginn Naive Bayes agent uses some incoming Events as a training set for Naive Bayes Machine Learning. Then it classifies Events from other sources accordingly using tags. Acts as a Huginn Agent front end to the NBayes gem (https://github.com/oasic/nbayes).
 
 ## Installation
 
