@@ -1,6 +1,6 @@
 require 'nbayes'
 require 'yaml'
-require 'fast-stemmer'
+require 'fast_stemmer'
 
 module Agents
   class NaiveBayesAgent < Agent
@@ -93,8 +93,7 @@ module Agents
               nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
             end
             if interpolated['stem'] == "true"
-              #stemmer = Lingua::Stemmer.new(:language => "en")
-              #nb_content = nb_content.split(/\s+/).map{|word| stemmer.stem(word)}.join(" ")
+              nb_content = nb_content.split(/\s+/).map{|word| word.stem}.join(" ")
             end
             cats.each do |c|
               c.starts_with?('-') ? nbayes.untrain(nb_content.split(/\s+/), c[1..-1]) : nbayes.train(nb_content.split(/\s+/), c)
@@ -111,8 +110,7 @@ module Agents
             nb_content = nb_content.gsub(/[^[:word:]\s]/, '') #https://stackoverflow.com/a/10074271
           end
           if interpolated['stem'] == "true"
-            #stemmer = Lingua::Stemmer.new(:language => "en")
-            #nb_content = nb_content.split(/\s+/).map{|word| stemmer.stem(word)}.join(" ")
+            nb_content = nb_content.split(/\s+/).map{|word| word.stem}.join(" ")
           end
           result = nbayes.classify(nb_content.split(/\s+/))
           if interpolated['min_value'].to_f == 1
