@@ -1,6 +1,7 @@
 require 'nbayes'
 require 'yaml'
 require 'ruby-stemmer'
+require 'lingua/stemmer'
 
 module Agents
   class NaiveBayesAgent < Agent
@@ -48,7 +49,7 @@ module Agents
         'propagate_training_events' => 'true',
         'expected_update_period_in_days' => "7",
         'strip_punctuation' => 'false',
-        'stem' => 'false',
+        'stem' => 'false'
       }
     end
 
